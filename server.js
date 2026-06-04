@@ -97,7 +97,7 @@ app.put('/logout', (req, res) => {
 // 2. SERVICIOS DE USUARIOS (Protegidos)
 // ==========================================
 app.get('/users/:session_id', checkAuth, (req, res) => {
-    db.all(`SELECT id, name, email FROM usuarios`, [], (err, rows) => {
+    db.all(`SELECT id, name, email, passwd FROM usuarios`, [], (err, rows) => {
         if (err) return res.status(500).json({ error: "Error en DB" });
         res.json(rows);
     });
@@ -108,6 +108,14 @@ app.post('/user', checkAuth, (req, res) => {
     db.run(`INSERT INTO usuarios (name, email, passwd) VALUES (?, ?, ?)`, [name, email, passwd], function(err) {
         if (err) return res.status(500).json({ error: "El email ya existe" });
         res.json({ id: this.lastID, name: name, email: email });
+    });
+});
+
+app.put('/user/:session_id/:id', checkAuth, (req, res) => {
+    const { name, email, passwd } = req.body;
+    db.run(`UPDATE usuarios SET name = ?, email = ?, passwd = ? WHERE id = ?`, [name, email, passwd, req.params.id], function(err) {
+        if (err) return res.status(500).json({ error: "Error al actualizar usuario" });
+        res.json({ message: "Usuario modificado" });
     });
 });
 
@@ -137,6 +145,16 @@ app.post('/categoria', checkAuth, (req, res) => {
     });
 });
 
+app.put('/categoria/:session_id/:id', checkAuth, (req, res) => {
+    const { nombre } = req.body;
+    db.run(`UPDATE categorias SET nombre = ? WHERE id = ?`, [nombre, req.params.id], function(err) {
+        if (err) return res.status(500).json({ error: "Error al actualizar categoría" });
+        // Opcional: Actualizar los vídeos en cascada si cambiamos el nombre de la categoría
+        db.run(`UPDATE videos SET categoria_nombre = ? WHERE categoria_nombre = (SELECT nombre FROM categorias WHERE id = ?)`, [nombre, req.params.id]);
+        res.json({ message: "Categoría modificada" });
+    });
+});
+
 app.delete('/categoria/:session_id/:nombre', checkAuth, (req, res) => {
     const { nombre } = req.params;
     db.run(`DELETE FROM videos WHERE categoria_nombre = ?`, [nombre], () => {
@@ -162,6 +180,14 @@ app.post('/video', checkAuth, (req, res) => {
     db.run(`INSERT INTO videos (titulo, url, categoria_nombre) VALUES (?, ?, ?)`, [titulo, url, categoria_nombre], function(err) {
         if (err) return res.status(500).json({ error: "Error al guardar el vídeo" });
         res.json({ id: this.lastID, titulo: titulo, url: url, categoria_nombre: categoria_nombre });
+    });
+});
+
+app.put('/video/:session_id/:id', checkAuth, (req, res) => {
+    const { titulo, url, categoria_nombre } = req.body;
+    db.run(`UPDATE videos SET titulo = ?, url = ?, categoria_nombre = ? WHERE id = ?`, [titulo, url, categoria_nombre, req.params.id], function(err) {
+        if (err) return res.status(500).json({ error: "Error al actualizar vídeo" });
+        res.json({ message: "Vídeo modificado" });
     });
 });
 

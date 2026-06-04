@@ -53,6 +53,22 @@ app.controller('AdminController', function($scope, $window, $http) {
             alert("Error: " + (error.data.error || "Fallo al crear"));
         });
     };
+
+    $scope.editarUsuario = function(u) {
+        const nuevoNombre = prompt("Nuevo nombre:", u.name);
+        const nuevoEmail = prompt("Nuevo email:", u.email);
+        const nuevaClave = prompt("Nueva contraseña (o deja la actual):", u.passwd || "");
+        
+        if (nuevoNombre && nuevoEmail) {
+            $http.put('http://localhost:3000/user/' + token + '/' + u.id, {
+                name: nuevoNombre, email: nuevoEmail, passwd: nuevaClave
+            }).then(function() {
+                $scope.cargarDatos();
+            }, function(err) {
+                alert("Error al actualizar usuario");
+            });
+        }
+    };
     
     $scope.borrarUsuario = function(idUser, index) {
         if(confirm("¿Estás seguro de borrar a este usuario?")) {
@@ -80,6 +96,19 @@ app.controller('AdminController', function($scope, $window, $http) {
             alert("Error: " + (error.data.error || "La categoría ya existe"));
         });
     };
+
+    $scope.editarCategoria = function(cat) {
+        const nuevoNombre = prompt("Nuevo nombre para la categoría:", cat.nombre);
+        if (nuevoNombre && nuevoNombre !== cat.nombre) {
+            $http.put('http://localhost:3000/categoria/' + token + '/' + cat.id, {
+                nombre: nuevoNombre
+            }).then(function() {
+                $scope.cargarDatos();
+            }, function(err) {
+                alert("Error al actualizar categoría");
+            });
+        }
+    };
     
     $scope.borrarCategoria = function(nombreCat, index) {
         if(confirm("Si borras la categoría, se borrarán sus vídeos. ¿Continuar?")) {
@@ -105,6 +134,21 @@ app.controller('AdminController', function($scope, $window, $http) {
             $scope.videos.push(res.data);
             $scope.nuevoVideo = {};
         });
+    };
+
+    $scope.editarVideo = function(vid) {
+        const nuevoTitulo = prompt("Nuevo título:", vid.titulo);
+        const nuevaUrl = prompt("Nueva URL:", vid.url);
+        
+        if (nuevoTitulo && nuevaUrl) {
+            $http.put('http://localhost:3000/video/' + token + '/' + vid.id, {
+                titulo: nuevoTitulo, url: nuevaUrl, categoria_nombre: vid.categoria_nombre
+            }).then(function() {
+                $scope.cargarDatos();
+            }, function(err) {
+                alert("Error al actualizar vídeo");
+            });
+        }
     };
     
     $scope.borrarVideo = function(idVideo, index) {

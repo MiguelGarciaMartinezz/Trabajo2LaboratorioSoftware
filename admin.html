@@ -58,6 +58,7 @@
                                     <td class="fw-bold">{{ u.name }}</td>
                                     <td>{{ u.email }}</td>
                                     <td>
+                                        <button class="btn btn-sm btn-primary me-1" ng-click="editarUsuario(u)">✏️ Editar</button>
                                         <button class="btn btn-sm btn-danger" ng-click="borrarUsuario(u.id, $index)">🗑️ Borrar</button>
                                     </td>
                                 </tr>
@@ -78,7 +79,10 @@
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item d-flex justify-content-between align-items-center" ng-repeat="cat in categorias">
                             {{ cat.nombre }}
-                            <button class="btn btn-sm btn-danger" ng-click="borrarCategoria(cat.nombre, $index)">🗑️</button>
+                            <div>
+                                <button class="btn btn-sm btn-primary me-1" ng-click="editarCategoria(cat)">✏️</button>
+                                <button class="btn btn-sm btn-danger" ng-click="borrarCategoria(cat.nombre, $index)">🗑️</button>
+                            </div>
                         </li>
                     </ul>
                 </div>
@@ -121,6 +125,7 @@
                                     <td><a href="{{ vid.url }}" target="_blank">Ver enlace</a></td>
                                     <td><span class="badge bg-secondary">{{ vid.categoria_nombre }}</span></td>
                                     <td>
+                                        <button class="btn btn-sm btn-primary me-1" ng-click="editarVideo(vid)">✏️ Editar</button>
                                         <button class="btn btn-sm btn-danger" ng-click="borrarVideo(vid.id, $index)">🗑️ Borrar</button>
                                     </td>
                                 </tr>
