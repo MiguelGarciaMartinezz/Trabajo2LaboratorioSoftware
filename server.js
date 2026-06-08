@@ -94,7 +94,7 @@ app.put('/logout', (req, res) => {
 });
 
 // ==========================================
-// 2. SERVICIOS DE USUARIOS (Protegidos)
+// 2. SERVICIOS DE USUARIOS 
 // ==========================================
 app.get('/users/:session_id', checkAuth, (req, res) => {
     db.all(`SELECT id, name, email, passwd FROM usuarios`, [], (err, rows) => {
@@ -128,7 +128,7 @@ app.delete('/user/:session_id/:id', checkAuth, (req, res) => {
 });
 
 // ==========================================
-// 3. SERVICIOS DE CATEGORÍAS (Protegidos)
+// 3. SERVICIOS DE CATEGORÍAS 
 // ==========================================
 app.get('/categorias/:session_id', checkAuth, (req, res) => {
     db.all(`SELECT * FROM categorias`, [], (err, rows) => {
@@ -166,7 +166,7 @@ app.delete('/categoria/:session_id/:nombre', checkAuth, (req, res) => {
 });
 
 // ==========================================
-// 4. SERVICIOS DE VÍDEOS (Protegidos)
+// 4. SERVICIOS DE VÍDEOS 
 // ==========================================
 app.get('/videos/:session_id', checkAuth, (req, res) => {
     db.all(`SELECT * FROM videos`, [], (err, rows) => {
