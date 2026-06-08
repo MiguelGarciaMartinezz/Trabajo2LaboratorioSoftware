@@ -1,5 +1,5 @@
 /* ==========================================
-   ESTILO: MODERN MULTIMEDIA (SOFT UI)
+   ESTILO: MODERN MULTIMEDIA 
 ========================================== */
 
 body { 
@@ -80,16 +80,16 @@ thead th { color: #64748b !important; text-transform: uppercase; font-size: 0.8r
 
 .video-thumbnail {
     height: 160px;
-    background-color: #475569; /* Color de fondo por si no carga la imagen */
-    background-size: cover;    /* Hace que la imagen ocupe todo el espacio */
-    background-position: center; /* Centra la imagen */
+    background-color: #475569; 
+    background-size: cover;    
+    background-position: center; 
     display: flex;
     align-items: center;
     justify-content: center;
     position: relative;
 }
 
-/* Capa oscura semitransparente para que el botón de play resalte siempre */
+
 .video-thumbnail::before {
     content: '';
     position: absolute;
@@ -99,7 +99,7 @@ thead th { color: #64748b !important; text-transform: uppercase; font-size: 0.8r
 }
 
 .video-card:hover .video-thumbnail::before {
-    background: rgba(0, 0, 0, 0.05); /* Se aclara al pasar el ratón */
+    background: rgba(0, 0, 0, 0.05); 
 }
 
 
