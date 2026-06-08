@@ -1,0 +1,106 @@
+/* ==========================================
+   ESTILO: MODERN MULTIMEDIA (SOFT UI)
+========================================== */
+
+body { 
+    background-color: #eef2f6; 
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+}
+
+.card { 
+    border-radius: 12px; 
+    border: none; 
+    background: #ffffff;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); 
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.navbar { 
+    background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%) !important; 
+    box-shadow: 0 4px 15px rgba(124, 58, 237, 0.2) !important; 
+}
+
+.navbar .navbar-brand, .navbar .text-muted, .navbar span {
+    color: #ffffff !important;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+.navbar .btn-outline-danger {
+    color: #ffffff; border-color: rgba(255, 255, 255, 0.6);
+}
+
+.navbar .btn-outline-danger:hover {
+    background-color: #ffffff; color: #7c3aed; border-color: #ffffff;
+}
+
+.text-primary { color: #4f46e5 !important; }
+
+.btn {
+    border-radius: 6px; font-weight: 500; letter-spacing: 0.3px;
+    border: none !important; box-shadow: none !important;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.btn-primary { background-color: #e0e7ff !important; color: #4f46e5 !important; }
+.btn-primary:hover { background-color: #c7d2fe !important; color: #3730a3 !important; }
+
+.btn-danger { background-color: #fee2e2 !important; color: #ef4444 !important; }
+.btn-danger:hover { background-color: #fecaca !important; color: #b91c1c !important; }
+
+.btn-success { background-color: #dcfce7 !important; color: #166534 !important; }
+.btn-success:hover { background-color: #bbf7d0 !important; color: #14532d !important; }
+
+.form-control, .form-select, .btn:not(.btn-sm) { min-height: 38px; }
+.btn-sm { font-size: 0.85rem; padding: 0.4rem 0.8rem; }
+
+.categoria-titulo { 
+    border-bottom: 4px solid;
+    border-image: linear-gradient(to right, #4f46e5, #7c3aed) 1;
+    padding-bottom: 12px; margin-bottom: 25px; text-transform: uppercase;
+    letter-spacing: 1px; font-size: 1.5rem;
+}
+
+.table-light { background-color: #f8fafc !important; }
+.table td, .table th { vertical-align: middle; padding: 12px 15px; border-bottom: 1px solid #f1f5f9; }
+thead th { color: #64748b !important; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 0.5px; border-bottom: 2px solid #e2e8f0 !important; }
+.col-acciones { white-space: nowrap; width: 1%; }
+.list-group-item { padding: 12px 15px; border-color: #f1f5f9; }
+
+/* ==========================================
+   TARJETAS DE VÍDEO CON MINIATURAS REALES
+========================================== */
+.video-card {
+    overflow: hidden;
+}
+
+.video-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.1);
+}
+
+.video-thumbnail {
+    height: 160px;
+    background-color: #475569; /* Color de fondo por si no carga la imagen */
+    background-size: cover;    /* Hace que la imagen ocupe todo el espacio */
+    background-position: center; /* Centra la imagen */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+/* Capa oscura semitransparente para que el botón de play resalte siempre */
+.video-thumbnail::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0, 0, 0, 0.2);
+    transition: background 0.3s ease;
+}
+
+.video-card:hover .video-thumbnail::before {
+    background: rgba(0, 0, 0, 0.05); /* Se aclara al pasar el ratón */
+}
+
+
+

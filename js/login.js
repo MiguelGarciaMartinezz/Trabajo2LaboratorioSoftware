@@ -18,7 +18,12 @@ app.controller('LoginController', function($scope, $window, $http) {
                 $window.sessionStorage.setItem('token', response.data.session_id);
                 $window.sessionStorage.setItem('username', response.data.name);
                 
-                $window.location.href = 'admin.html';
+                // Novedad Sprint 3: Separamos a dónde va cada usuario
+                if (response.data.name === 'Administrador') {
+                    $window.location.href = 'admin.html';
+                } else {
+                    $window.location.href = 'usuario.html';
+                }
                 
             }, function(error) {
                 if(error.status === 401) {
