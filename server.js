@@ -94,7 +94,7 @@ app.put('/logout', (req, res) => {
 });
 
 // ==========================================
-// 2. SERVICIOS DE USUARIOS (Protegidos)
+// 2. SERVICIOS DE USUARIOS 
 // ==========================================
 app.get('/users/:session_id', checkAuth, (req, res) => {
     db.all(`SELECT id, name, email, passwd FROM usuarios`, [], (err, rows) => {
@@ -128,7 +128,7 @@ app.delete('/user/:session_id/:id', checkAuth, (req, res) => {
 });
 
 // ==========================================
-// 3. SERVICIOS DE CATEGORÍAS (Protegidos)
+// 3. SERVICIOS DE CATEGORÍAS 
 // ==========================================
 app.get('/categorias/:session_id', checkAuth, (req, res) => {
     db.all(`SELECT * FROM categorias`, [], (err, rows) => {
@@ -149,7 +149,6 @@ app.put('/categoria/:session_id/:id', checkAuth, (req, res) => {
     const { nombre } = req.body;
     db.run(`UPDATE categorias SET nombre = ? WHERE id = ?`, [nombre, req.params.id], function(err) {
         if (err) return res.status(500).json({ error: "Error al actualizar categoría" });
-        // Opcional: Actualizar los vídeos en cascada si cambiamos el nombre de la categoría
         db.run(`UPDATE videos SET categoria_nombre = ? WHERE categoria_nombre = (SELECT nombre FROM categorias WHERE id = ?)`, [nombre, req.params.id]);
         res.json({ message: "Categoría modificada" });
     });
@@ -166,7 +165,7 @@ app.delete('/categoria/:session_id/:nombre', checkAuth, (req, res) => {
 });
 
 // ==========================================
-// 4. SERVICIOS DE VÍDEOS (Protegidos)
+// 4. SERVICIOS DE VÍDEOS 
 // ==========================================
 app.get('/videos/:session_id', checkAuth, (req, res) => {
     db.all(`SELECT * FROM videos`, [], (err, rows) => {
