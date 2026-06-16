@@ -1,5 +1,6 @@
+//Crear la aplicación AngularJS
 const app = angular.module('usuarioApp', []);
-
+//Crear el controlador para la gestión del catálogo de vídeos
 app.controller('UsuarioController', function($scope, $window, $http) {
     const token = $window.sessionStorage.getItem('token');
     
@@ -12,8 +13,11 @@ app.controller('UsuarioController', function($scope, $window, $http) {
     $scope.categorias = [];
     $scope.videos = [];
 
+    //Función para cargar el catálogo de categorías y vídeos desde el servidor
     $scope.cargarCatalogo = function() {
+        //Petición GET para obtener la lista de categorías
         $http.get('http://localhost:3000/categorias/' + token).then(function(res) {
+            //Si la petición es exitosa, asignar los datos a $scope.categorias
             $scope.categorias = res.data;
         }, function() {
             alert("Tu sesión ha caducado. Vuelve a iniciar sesión.");
@@ -27,9 +31,6 @@ app.controller('UsuarioController', function($scope, $window, $http) {
 
     $scope.cargarCatalogo();
 
-    // ==========================================
-    // MAGIA: EXTRAER MINIATURA DE YOUTUBE
-    // ==========================================
     $scope.obtenerMiniatura = function(url) {
         if (!url) return '';
         
@@ -38,7 +39,7 @@ app.controller('UsuarioController', function($scope, $window, $http) {
         const match = url.match(regExp);
 
         if (match && match[2].length === 11) {
-            // Si es un vídeo de YouTube, devolvemos su miniatura en alta calidad
+            // Si es un vídeo de YouTube, devolvemos su miniatura 
             return 'https://img.youtube.com/vi/' + match[2] + '/hqdefault.jpg';
         } else {
             // Si no es un enlace de YouTube, devolvemos un fondo gris por defecto
