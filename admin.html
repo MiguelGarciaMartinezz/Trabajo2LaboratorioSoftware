@@ -2,6 +2,7 @@
 <html lang="es" ng-app="adminApp">
 <head>
     <meta charset="UTF-8">
+    <!-- Referencia a Bootstrap (Estilo de los botones), nuestra hoja de estilo y AngularJS -->
     <title>Gestor Multimedia - Admin</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
@@ -9,17 +10,18 @@
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
 </head>
 <body ng-controller="AdminController">
-
+    <!-- Barra de navegación -->
     <nav class="navbar navbar-light sticky-top mb-4 py-3">
         <div class="container">
             <a class="navbar-brand fw-bold text-primary" href="#">Gestor Multimedia</a>
             <div class="d-flex gap-3 align-items-center">
-                <span class="fw-bold text-muted">Administrador: {{ usuarioActual }}</span>
+                <span class="fw-bold text-muted">{{ usuarioActual }}</span>
                 <button class="btn btn-outline-danger btn-sm rounded-pill fw-bold" ng-click="logout()">Salir</button>
             </div>
         </div>
     </nav>
-
+ 
+    <!-- Contenedor principal -->
     <div class="container">
         <div class="row">
             
@@ -28,6 +30,7 @@
                     <h4 class="fw-bold text-primary mb-3">Gestión de Usuarios</h4>
                     <form class="row g-2 mb-4" ng-submit="crearUsuario()">
                         <div class="col-md-3">
+                            <!-- Input para el nombre del usuario, enlazado a la variable nuevoUser.name igual para el email y contraseña -->
                             <input type="text" class="form-control" ng-model="nuevoUser.name" placeholder="Nombre" required>
                         </div>
                         <div class="col-md-4">
@@ -37,10 +40,12 @@
                             <input type="password" class="form-control" ng-model="nuevoUser.passwd" placeholder="Contraseña" required>
                         </div>
                         <div class="col-md-2">
+                            <!-- Botón para añadir un nuevo usuario te manda a crearUsuario() -->
                             <button type="submit" class="btn btn-success w-100">Añadir Usuario</button>
                         </div>
                     </form>
 
+                    <!-- Tabla para mostrar los usuarios existentes -->
                     <div class="table-responsive">
                         <table class="table align-middle m-0">
                             <thead class="table-light">
@@ -51,6 +56,7 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                <!-- ng-repeat para iterar sobre la lista de usuarios y mostrar cada uno en una fila de la tabla -->
                                 <tr ng-repeat="u in usuarios">
                                     <td class="fw-bold">{{ u.name }}</td>
                                     <td>{{ u.email }}</td>
@@ -67,14 +73,16 @@
                 </div>
             </div>
 
+            <!-- Sección para gestionar categorías y vídeos -->
             <div class="col-md-4 mb-4">
                 <div class="card p-4 h-100">
                     <h4 class="fw-bold text-primary mb-3">Categorías</h4>
+                    <!-- Formulario para añadir una nueva categoría, enlazado a la variable nuevaCatNombre -->
                     <form class="d-flex gap-2 mb-4" ng-submit="crearCategoria()">
                         <input type="text" class="form-control" ng-model="nuevaCatNombre" placeholder="Nombre categoría..." required>
                         <button type="submit" class="btn btn-success px-4">Añadir</button>
                     </form>
-
+                    <!-- Lista de categorías existentes, con botones para editar y eliminar cada una -->
                     <ul class="list-group list-group-flush border-top pt-2">
                         <li class="list-group-item d-flex justify-content-between align-items-center px-0" ng-repeat="cat in categorias">
                             <span class="fw-bold text-dark text-truncate pe-2">{{ cat.nombre }}</span>
@@ -87,6 +95,7 @@
                 </div>
             </div>
 
+            <!-- Sección para gestionar vídeos -->
             <div class="col-md-8 mb-4">
                 <div class="card p-4 h-100">
                     <h4 class="fw-bold text-primary mb-3">Vídeos</h4>
@@ -108,6 +117,7 @@
                         </div>
                     </form>
 
+                    <!-- Tabla para mostrar los vídeos existentes, con botones para editar y eliminar cada uno -->
                     <div class="table-responsive">
                         <table class="table align-middle m-0">
                             <thead class="table-light">
