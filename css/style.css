@@ -1,106 +1,162 @@
-/* ==========================================
-   ESTILO: MODERN MULTIMEDIA 
-========================================== */
-
+/*
+General
+*/
 body { 
     background-color: #eef2f6; 
     font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
 }
 
+/*
+Tarjetas
+*/
+
 .card { 
     border-radius: 12px; 
-    border: none; 
-    background: #ffffff;
+    border: none;        /* Quitamos el borde por defecto de Bootstrap*/
+    background: #ffffff; 
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); 
+    
+    /*Si la tarjeta cambia de tamaño o sombra, lo haga con una animación suave*/
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
+/* 
+Barra de navegación superior
+*/
+
 .navbar { 
+    /* Fondo con degradado: empieza en azul oscuro y termina en morado */
     background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%) !important; 
     box-shadow: 0 4px 15px rgba(124, 58, 237, 0.2) !important; 
 }
 
+/* Aplicamos estilos al texto, título y enlaces que estén dentro de la barra de navegación */
 .navbar .navbar-brand, .navbar .text-muted, .navbar span {
-    color: #ffffff !important;
-    text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    color: #ffffff !important; 
+    text-shadow: 0 1px 2px rgba(0,0,0,0.1); 
 }
 
+/* El botón de Salir*/
 .navbar .btn-outline-danger {
-    color: #ffffff; border-color: rgba(255, 255, 255, 0.6);
-}
+    color: #ffffff; 
+    border-color: rgba(255, 255, 255, 0.6);
 
+/* Cuando pasas el ratón por encima del botón Salir*/
 .navbar .btn-outline-danger:hover {
-    background-color: #ffffff; color: #7c3aed; border-color: #ffffff;
+    background-color: #ffffff; 
+    color: #7c3aed;            /* El texto morado */
+    border-color: #ffffff;
 }
 
+/* Un color estandarizado para los textos principales */
 .text-primary { color: #4f46e5 !important; }
 
+/*
+Botones globales
+*/
+
 .btn {
-    border-radius: 6px; font-weight: 500; letter-spacing: 0.3px;
-    border: none !important; box-shadow: none !important;
+    border-radius: 6px; 
+    font-weight: 500; 
+    letter-spacing: 0.3px; /* separacion para hacerlo las legible */
+    border: none !important; 
+    box-shadow: none !important;
+    
+    /* Animación para cuando el botón cambia de color al pasar el ratón */
     transition: background-color 0.2s ease, color 0.2s ease;
 }
 
+/* Botón Azul */
 .btn-primary { background-color: #e0e7ff !important; color: #4f46e5 !important; }
 .btn-primary:hover { background-color: #c7d2fe !important; color: #3730a3 !important; }
 
+/* Botón Rojo (Borrar) */
 .btn-danger { background-color: #fee2e2 !important; color: #ef4444 !important; }
 .btn-danger:hover { background-color: #fecaca !important; color: #b91c1c !important; }
 
+/* Botón Verde (Para añadir/guardar) */
 .btn-success { background-color: #dcfce7 !important; color: #166534 !important; }
 .btn-success:hover { background-color: #bbf7d0 !important; color: #14532d !important; }
 
+/* Ajustes de tamaño para que las cajas de texto y los botones encajen perfecto */
 .form-control, .form-select, .btn:not(.btn-sm) { min-height: 38px; }
 .btn-sm { font-size: 0.85rem; padding: 0.4rem 0.8rem; }
 
+/* 
+Títulos de las categorías y secciones
+*/
+
 .categoria-titulo { 
-    border-bottom: 4px solid;
+    border-bottom: 4px solid; /* Subrayado */
+    /* Pintamos el subrayado usando un degradado de azul a morado */
     border-image: linear-gradient(to right, #4f46e5, #7c3aed) 1;
-    padding-bottom: 12px; margin-bottom: 25px; text-transform: uppercase;
-    letter-spacing: 1px; font-size: 1.5rem;
+    
+    padding-bottom: 12px; 
+    margin-bottom: 25px; 
+    text-transform: uppercase; /* Convierte todo el texto a mayúsculas */
+    letter-spacing: 1px; /* Espaciado entre letras */
+    font-size: 1.5rem; 
 }
 
-.table-light { background-color: #f8fafc !important; }
-.table td, .table th { vertical-align: middle; padding: 12px 15px; border-bottom: 1px solid #f1f5f9; }
-thead th { color: #64748b !important; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 0.5px; border-bottom: 2px solid #e2e8f0 !important; }
+/* Estilos para las tablas*/
+.table-light { background-color: #f8fafc !important; } /* Gris claro cabecera */
+.table td, .table th { 
+    vertical-align: middle; /* Centra el texto verticalmente */
+    padding: 12px 15px; 
+    border-bottom: 1px solid #f1f5f9; 
+}
+
+/* Las letras de la cabecera de la tabla (Nombre, Email, etc.) */
+thead th { 
+    color: #64748b !important; 
+    text-transform: uppercase; 
+    font-size: 0.8rem; 
+    letter-spacing: 0.5px; 
+    border-bottom: 2px solid #e2e8f0 !important; 
+}
+
+
 .col-acciones { white-space: nowrap; width: 1%; }
+
+/* Estilo para las listas */
 .list-group-item { padding: 12px 15px; border-color: #f1f5f9; }
 
-/* ==========================================
-   TARJETAS DE VÍDEO CON MINIATURAS REALES
-========================================== */
+/* 
+Tarjetas de vídeo
+*/
+
+/* La tarjeta que envuelve al vídeo */
 .video-card {
-    overflow: hidden;
+    overflow: hidden; /* Corta cualquier cosa que se salga de los bordes redondeados */
 }
 
+/* Al pasar el ratón por encima se resalta*/
 .video-card:hover {
     transform: translateY(-8px);
     box-shadow: 0 12px 25px rgba(0, 0, 0, 0.1);
 }
 
+/* La caja donde va la foto en miniatura del vídeo */
 .video-thumbnail {
     height: 160px;
-    background-color: #475569; 
-    background-size: cover;    
-    background-position: center; 
+    background-color: #475569;
+    background-size: cover;      /* La foto se estira para rellenar toda la caja */
+    background-position: center; /* Centra la foto */
     display: flex;
     align-items: center;
     justify-content: center;
-    position: relative;
+    position: relative; 
 }
 
-
 .video-thumbnail::before {
-    content: '';
+    content: ''; 
     position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(0, 0, 0, 0.2);
-    transition: background 0.3s ease;
+    top: 0; left: 0; right: 0; bottom: 0; /* Lo estiramos a los 4 lados */
+    background: rgba(0, 0, 0, 0.2);       /* La capa negra transparente */
+    transition: background 0.3s ease;     /* Animación de 0.3s si cambia de color */
 }
 
 .video-card:hover .video-thumbnail::before {
     background: rgba(0, 0, 0, 0.05); 
 }
-
-
-
+}
