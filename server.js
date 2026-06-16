@@ -3,20 +3,20 @@ const cors = require('cors');
 const sqlite3 = require('sqlite3').verbose();
 const { v4: uuidv4 } = require('uuid');
 
+// Crear la aplicación Express
 const app = express();
 const port = 3000;
 
 app.use(cors());
 app.use(express.json());
 
+//hacemos que el servidor sirva los archivos estáticos de la carpeta actual
 const db = new sqlite3.Database('./database.sqlite', (err) => {
     if (err) console.error("Error al abrir la base de datos:", err.message);
     else console.log("Conectado a la base de datos SQLite.");
 });
 
-// ==========================================
-// INICIALIZACIÓN DE TABLAS
-// ==========================================
+//Inicializamos la base de datos y creamos las tablas si no existen
 db.serialize(() => {
     db.run(`CREATE TABLE IF NOT EXISTS usuarios (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -52,9 +52,7 @@ db.serialize(() => {
     )`);
 });
 
-// ==========================================
-// MIDDLEWARE PARA VALIDAR SESIÓN
-// ==========================================
+// Middleware (Programa interno antes de crear o borrar se pasa por aquí) para verificar la sesión del usuario
 const checkAuth = (req, res, next) => {
     const sessionId = req.params.session_id || req.body.session_id;
     if (!sessionId) return res.status(401).json({ error: "Sesión no proporcionada" });
@@ -66,17 +64,20 @@ const checkAuth = (req, res, next) => {
     });
 };
 
-// ==========================================
-// 1. SERVICIOS DE LOGIN / LOGOUT
-// ==========================================
+//login y logout
 app.post('/login', (req, res) => {
     const { user, passwd } = req.body; 
+    // Buscamos al usuario por email o nombre y contraseña
     db.get(`SELECT * FROM usuarios WHERE (email = ? OR name = ?) AND passwd = ?`, [user, user, passwd], (err, row) => {
+        // Si hay un error en la consulta, devolvemos un error 500
         if (err) return res.status(500).json({ error: "Error interno" });
         if (row) {
+            // Si el usuario existe y la contraseña es correcta, generamos un nuevo ID de sesión y lo guardamos en la tabla de sesiones
             const sessionId = uuidv4();
+            // Insertamos la nueva sesión en la base de datos
             db.run(`INSERT INTO sesiones (session_id, user_id) VALUES (?, ?)`, [sessionId, row.id], (insertErr) => {
                 if (insertErr) return res.status(500).json({ error: "Error al crear la sesión" });
+                // Devolvemos el ID de sesión y el nombre del usuario al cliente
                 res.json({ session_id: sessionId, name: row.name });
             });
         } else {
@@ -85,32 +86,34 @@ app.post('/login', (req, res) => {
     });
 });
 
+// Endpoint para cerrar sesión
 app.put('/logout', (req, res) => {
     const { session_id } = req.body;
+    // Eliminamos la sesión de la base de datos
     db.run(`DELETE FROM sesiones WHERE session_id = ?`, [session_id], (err) => {
+        // Si hay un error al eliminar la sesión, devolvemos un error 500
         if (err) return res.status(500).json({ error: "Error al cerrar sesión" });
         res.json({ message: "Sesión cerrada con éxito" });
     });
 });
 
-// ==========================================
-// 2. SERVICIOS DE USUARIOS 
-// ==========================================
+//app.get para obtener la lista de usuarios
 app.get('/users/:session_id', checkAuth, (req, res) => {
     db.all(`SELECT id, name, email, passwd FROM usuarios`, [], (err, rows) => {
         if (err) return res.status(500).json({ error: "Error en DB" });
         res.json(rows);
     });
 });
-
+//app.post para crear un nuevo usuario
 app.post('/user', checkAuth, (req, res) => {
     const { name, email, passwd } = req.body;
+    // Insertamos el nuevo usuario en la base de datos
     db.run(`INSERT INTO usuarios (name, email, passwd) VALUES (?, ?, ?)`, [name, email, passwd], function(err) {
         if (err) return res.status(500).json({ error: "El email ya existe" });
         res.json({ id: this.lastID, name: name, email: email });
     });
 });
-
+//app.put para modificar un usuario existente
 app.put('/user/:session_id/:id', checkAuth, (req, res) => {
     const { name, email, passwd } = req.body;
     db.run(`UPDATE usuarios SET name = ?, email = ?, passwd = ? WHERE id = ?`, [name, email, passwd, req.params.id], function(err) {
@@ -118,7 +121,7 @@ app.put('/user/:session_id/:id', checkAuth, (req, res) => {
         res.json({ message: "Usuario modificado" });
     });
 });
-
+//app.delete para borrar un usuario existente
 app.delete('/user/:session_id/:id', checkAuth, (req, res) => {
     if (req.params.id == 1) return res.status(403).json({ error: "No puedes borrar al admin principal" });
     db.run(`DELETE FROM usuarios WHERE id = ?`, [req.params.id], function(err) {
@@ -127,9 +130,9 @@ app.delete('/user/:session_id/:id', checkAuth, (req, res) => {
     });
 });
 
-// ==========================================
-// 3. SERVICIOS DE CATEGORÍAS 
-// ==========================================
+//creamos los endpoints para las categorías y vídeos, todos protegidos por el middleware checkAuth
+
+//cogemos la lista de categorías y vídeos del servidor
 app.get('/categorias/:session_id', checkAuth, (req, res) => {
     db.all(`SELECT * FROM categorias`, [], (err, rows) => {
         if (err) return res.status(500).json({ error: "Error en DB" });
@@ -137,6 +140,7 @@ app.get('/categorias/:session_id', checkAuth, (req, res) => {
     });
 });
 
+//mandamos la lista de categorías y vídeos al servidor
 app.post('/categoria', checkAuth, (req, res) => {
     const { nombre } = req.body;
     db.run(`INSERT INTO categorias (nombre) VALUES (?)`, [nombre], function(err) {
@@ -145,6 +149,7 @@ app.post('/categoria', checkAuth, (req, res) => {
     });
 });
 
+//actualizamos una categoría existente
 app.put('/categoria/:session_id/:id', checkAuth, (req, res) => {
     const { nombre } = req.body;
     db.run(`UPDATE categorias SET nombre = ? WHERE id = ?`, [nombre, req.params.id], function(err) {
@@ -155,6 +160,7 @@ app.put('/categoria/:session_id/:id', checkAuth, (req, res) => {
     });
 });
 
+//borramos una categoría existente y todos sus vídeos asociados
 app.delete('/categoria/:session_id/:nombre', checkAuth, (req, res) => {
     const { nombre } = req.params;
     db.run(`DELETE FROM videos WHERE categoria_nombre = ?`, [nombre], () => {
@@ -165,9 +171,9 @@ app.delete('/categoria/:session_id/:nombre', checkAuth, (req, res) => {
     });
 });
 
-// ==========================================
-// 4. SERVICIOS DE VÍDEOS 
-// ==========================================
+// Endpoint para obtener la lista de vídeos
+
+
 app.get('/videos/:session_id', checkAuth, (req, res) => {
     db.all(`SELECT * FROM videos`, [], (err, rows) => {
         if (err) return res.status(500).json({ error: "Error en DB" });
@@ -198,6 +204,7 @@ app.delete('/video/:session_id/:id', checkAuth, (req, res) => {
     });
 });
 
+//listen para que el servidor escuche en el puerto 3000
 app.listen(port, () => {
     console.log(`Servidor API REST corriendo en http://localhost:${port}`);
 });
